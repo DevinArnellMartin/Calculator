@@ -11,35 +11,35 @@ class CalculatorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Calculator App',
+      title: 'Calculator',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const CalculatorScreen(),
+      home: const CalcScreen(),
     );
   }
 }
 
-class CalculatorScreen extends StatefulWidget {
-  const CalculatorScreen({super.key});
+class CalcScreen extends StatefulWidget {
+  const CalcScreen({super.key});
 
   @override
-  _CalculatorScreenState createState() => _CalculatorScreenState();
+   CalcState createState() => CalcState();
 }
 
-class _CalculatorScreenState extends State<CalculatorScreen> {
+class CalcState extends State<CalcScreen> {
   String txt = "";
   double? first_operand;
   double? second_operand;
   String? operator;
 
-  void buttonPress(String value) {
+  void buttonPress(String value) { // on button press do appropriate action
     if (value == "C") {
       clr();
     } else if (value == "=") {
       calc();
     } else {
-      _addToDisplay(value);
+      alterDisplay(value);
     }
   }
 
@@ -52,14 +52,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     });
   }
 
-  void _addToDisplay(String value) {
+  void alterDisplay(String value) {
     setState(() {
       txt += value;
     });
   }
 
   void calc() {
-    List<String> parts = txt.split(RegExp(r'([+\-*/])')); //TODO Validate if correct regular expression
+    List<String> parts = txt.split(RegExp(r'([+\-*/])')); // works
 
     if (parts.length == 2) {
       first_operand = double.tryParse(parts[0]);
@@ -70,12 +70,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         double? res;
 
         switch (operator) {
-          case "+":
-            res = first_operand! + second_operand!;
-            break;
-          case "-":
-            res = first_operand! - second_operand!;
-            break;
           case "*":
             res = first_operand! * second_operand!;
             break;
@@ -86,6 +80,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             }
             res = first_operand! / second_operand!;
             break;
+
+          case "+":
+            res = first_operand! + second_operand!;
+            break;
+          case "-":
+            res = first_operand! - second_operand!;
+            break;
+          
         }
 
         setState(() {
@@ -124,19 +126,19 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              makeButton("*"),
               makeButton("4"),
               makeButton("5"),
               makeButton("6"),
+              makeButton("*"),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              makeButton("3"),
-              makeButton("2"),
-              makeButton("1"),
               makeButton("-"),
+              makeButton("1"),
+              makeButton("2"),
+              makeButton("3"),
             ],
           ),
           Row(
@@ -156,7 +158,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget makeButton(String val) {
     return ElevatedButton(
       onPressed: () => buttonPress(val),
-      child: Text(val, style: const TextStyle(fontSize: 24)),
+      child: Text(val, style: const TextStyle(fontSize: 26)),
     );
   }
 }
